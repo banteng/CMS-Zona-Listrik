@@ -1,0 +1,35 @@
+  <?php 
+									$query = $this->db->get_where('menu', array('NAVBAR_PARENT_ID' => 0));
+									if($query->num_rows() > 0):
+								?>	
+								<?php foreach ($query->result() as $row):?>
+									<?php 
+										$nav_id=$row->NAVBAR_ID;
+										$query2 = $this->db->get_where('menu', array('NAVBAR_PARENT_ID' => $nav_id));
+									?>
+									<?php if($query2->num_rows() > 0):?>
+									<li>
+										<a href="<?php echo site_url($row->NAVBAR_LINK);?>"><?php echo $row->NAVBAR_NAME;?> <i class="fa fa-angle-down"></i></a>
+					
+										<!-- Sub -->
+										<ul class="nav nav-main">
+											<?php foreach ($query2->result() as $row2):?>
+											<li>
+												<a href="<?php echo site_url($row2->NAVBAR_LINK);?>"><?php echo $row2->NAVBAR_NAME;?></a>	
+											</li>
+											<?php endforeach;?>
+										</ul>
+										<!-- End Sub -->
+										
+									</li>
+									<?php else:?>
+									<li>
+										<a href="<?php echo site_url($row->NAVBAR_LINK);?>"><?php echo $row->NAVBAR_NAME;?></a>	
+									</li>
+									<?php endif;?>
+								<?php endforeach;?>
+								<?php else:?>
+                                <li>
+									<a href="#">Belum ada menu</a>		
+								</li>
+								<?php endif;?>
